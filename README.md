@@ -1,10 +1,10 @@
-# hub.docker.com/r/tiredofit/db-backup
+# hub.docker.com/r/rusxakep/db-backup
 
 
-[![Build Status](https://img.shields.io/docker/build/tiredofit/db-backup.svg)](https://hub.docker.com/r/tiredofit/db-backup)
-[![Docker Pulls](https://img.shields.io/docker/pulls/tiredofit/db-backup.svg)](https://hub.docker.com/r/tiredofit/db-backup)
-[![Docker Stars](https://img.shields.io/docker/stars/tiredofit/db-backup.svg)](https://hub.docker.com/r/tiredofit/db-backup)
-[![Docker Layers](https://images.microbadger.com/badges/image/tiredofit/db-backup.svg)](https://microbadger.com/images/tiredofit/db-backup)
+[![Build Status](https://img.shields.io/docker/cloud/build/rusxakep/db-backup.svg)](https://hub.docker.com/r/rusxakep/db-backup)
+[![Docker Pulls](https://img.shields.io/docker/pulls/rusxakep/db-backup.svg)](https://hub.docker.com/r/rusxakep/db-backup)
+[![Docker Stars](https://img.shields.io/docker/stars/rusxakep/db-backup.svg)](https://hub.docker.com/r/rusxakep/db-backup)
+[![Docker Layers](https://images.microbadger.com/badges/image/rusxakep/db-backup.svg)](https://microbadger.com/images/rusxakep/db-backup)
 
 # Introduction
 
@@ -23,13 +23,14 @@ Currently backs up CouchDB, InfluxDB, MySQL, MongoDB, Postgres, Redis servers.
 * select when to start the first dump, whether time of day or relative to container start time
 * Execute script after backup for monitoring/alerting purposes
 
-* This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/tiredofit/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, nano, vim) for easier management. It also supports sending to external SMTP servers.
+* This Container uses a [customized Alpine Linux base](https://hub.docker.com/r/rusxakep/alpine) which includes [s6 overlay](https://github.com/just-containers/s6-overlay) enabled for PID 1 Init capabilities, [zabbix-agent](https://zabbix.org) for individual container monitoring, Cron also installed along with other tools (bash,curl, less, logrotate, nano, vim) for easier management. It also supports sending to external SMTP servers.
 
 [Changelog](CHANGELOG.md)
 
 # Authors
 
 - [Dave Conroy](https://github.com/tiredofit)
+- [Mikhail Baykov](https://github.com/rusxakep)
 
 # Table of Contents
 
@@ -52,12 +53,12 @@ You must have a working DB server or container available for this to work proper
 
 # Installation
 
-Automated builds of the image are available on [Docker Hub](https://hub.docker.com/r/tiredofit/db-backup) and is the recommended
+Automated builds of the image are available on [Docker Hub](https://hub.docker.com/r/rusxakep/db-backup) and is the recommended
 method of installation.
 
 
 ```bash
-docker pull tiredofit/db-backup:latest
+docker pull rusxakep/db-backup:latest
 ```
 
 # Quick Start
@@ -85,14 +86,14 @@ The following directories are used for configuration and can be mapped for persi
 
 *If you are trying to backup a database that doesn't have a user or a password (you should!) make sure you set `CONTAINER_ENABLE_DOCKER_SECRETS=FALSE`*
 
-Along with the Environment Variables from the [Base image](https://hub.docker.com/r/tiredofit/alpine), below is the complete list of available options that can be used to customize your installation.
+Along with the Environment Variables from the [Base image](https://hub.docker.com/r/rusxakep/alpine), below is the complete list of available options that can be used to customize your installation.
 
 
 | Parameter | Description |
 |-----------|-------------|
 | `BACKUP_LOCATION` | Backup to `FILESYSTEM` or `S3` compatible services like S3, Minio, Wasabi - Default `FILESYSTEM`
 | `COMPRESSION` | Use either Gzip `GZ`, Bzip2 `BZ`, XZip `XZ`, ZSTD `ZSTD` or none `NONE` - Default `GZ`
-| `COMPRESSION_LEVEL` | Numberical value of what level of compression to use, most allow `1` to `9` except for `ZSTD` which allows for `1` to `19` - Default `3` |
+| `COMPRESSION_LEVEL` | Numerical value of what level of compression to use, most allow `1` to `9` except for `ZSTD` which allows for `1` to `19` - Default `3` |
 | `DB_TYPE` | Type of DB Server to backup `couch` `influx` `mysql` `pgsql` `mongo` `redis` |
 | `DB_HOST` | Server Hostname e.g. `mariadb`
 | `DB_NAME` | Schema Name e.g. `database`

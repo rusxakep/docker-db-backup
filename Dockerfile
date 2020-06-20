@@ -1,5 +1,5 @@
-FROM tiredofit/alpine:edge
-LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
+FROM rusxakep/alpine:edge
+LABEL maintainer="Mikhail Baykov (mike at baikov dot com)"
 
 ### Set Environment Variables
 ENV ENABLE_CRON=FALSE \
@@ -49,4 +49,4 @@ RUN set -ex && \
     rm -rf /tmp/* /var/cache/apk/*
 
 ### S6 Setup
-    ADD install  /
+ADD install  /
