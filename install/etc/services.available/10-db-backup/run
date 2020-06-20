@@ -28,6 +28,7 @@ dbname=${DB_NAME}
 dbpass=${DB_PASS}
 dbtype=${DB_TYPE}
 dbuser=${DB_USER}
+EXTRA_OPTS=${EXTRA_OPTS:""}
 MD5=${MD5:-TRUE}
 PARALLEL_COMPRESSION=${PARALLEL_COMPRESSION:-TRUE}
 SIZE_VALUE=${SIZE_VALUE:-"bytes"}
@@ -84,7 +85,11 @@ case "$dbtype" in
   "mysql" | "MYSQL" | "mariadb" | "MARIADB")
     dbtype=mysql
     dbport=${DB_PORT:-3306}
-    [[ ( -n "${DB_PASS}" ) ]] && export MYSQL_PWD=${dbpass}
+    cat > /root/.my.cnf << EOF
+[client]
+password=${DB_PASS}
+EOF
+    chmod 0400 /root/.my.cnf
   ;;
   "postgres" | "postgresql" | "pgsql" | "POSTGRES" | "POSTGRESQL" | "PGSQL" )
     dbtype=pgsql
@@ -117,14 +122,16 @@ backup_mysql() {
         print_notice "Dumping MariaDB database: $db"
         target=mysql_${db}_${dbhost}_${now}.sql
         compression
-        mysqldump --max-allowed-packet=512M -h "$dbhost" -P "$dbport" -u"$dbuser"  "${EXTRA_OPTS}" --databases "$db" | $dumpoutput > ${tmpdir}/"${target}"
+        # shellcheck disable=SC2086
+        mysqldump --max-allowed-packet=512M -h"$dbhost" -P"$dbport" -u"$dbuser" ${EXTRA_OPTS} --databases "$db" | $dumpoutput > ${tmpdir}/"${target}"
         generate_md5
         move_backup
       fi
     done
   else
     compression
-    mysqldump --max-allowed-packet=512M -A -h "$dbhost" -P "$dbport" -u"$dbuser"  "${EXTRA_OPTS}" | $dumpoutput > ${tmpdir}/"${target}"
+    # shellcheck disable=SC2086
+    mysqldump --max-allowed-packet=512M -A -h"$dbhost" -P"$dbport" -u"$dbuser" ${EXTRA_OPTS} | $dumpoutput > ${tmpdir}/"${target}"
     generate_md5
     move_backup
   fi
